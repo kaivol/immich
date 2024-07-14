@@ -89,7 +89,7 @@ class OrtSession:
                 case "CPUExecutionProvider" | "CUDAExecutionProvider":
                     option = {"arena_extend_strategy": "kSameAsRequested"}
                 case "OpenVINOExecutionProvider":
-                    option = {"device_type": "GPU_FP32", "cache_dir": (self.model_path.parent / "openvino").as_posix()}
+                    option = {"device_type": "GPU", "precision": "FP32", "cache_dir": (self.model_path.parent / "openvino").as_posix()}
                 case _:
                     option = {}
             options.append(option)

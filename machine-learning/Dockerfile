@@ -2,7 +2,7 @@ ARG DEVICE=cpu
 
 FROM python:3.11-bookworm@sha256:7bec1574675e7fd9e3a540a03cd7d6811c59ca261bd300cd665369d8f435298a as builder-cpu
 
-FROM openvino/ubuntu22_runtime:2023.3.0@sha256:176646df619032ea6c10faf842867119c393e7497b7f88b5e307e932a0fd5aa8 as builder-openvino
+FROM openvino/ubuntu22_runtime:2024.1.0@sha256:a11cdaad33cf91e04793bbfe0df28408f231da135297de67a1a4c604585217df as builder-openvino
 USER root
 RUN apt-get update && apt-get install -y --no-install-recommends python3-dev
 
@@ -38,11 +38,8 @@ RUN poetry install --sync --no-interaction --no-ansi --no-root --with ${DEVICE} 
 
 FROM python:3.11-slim-bookworm@sha256:17ec9dc2367aa748559d0212f34665ec4df801129de32db705ea34654b5bc77a as prod-cpu
 
-FROM openvino/ubuntu22_runtime:2023.3.0@sha256:176646df619032ea6c10faf842867119c393e7497b7f88b5e307e932a0fd5aa8 as prod-openvino
+FROM openvino/ubuntu22_runtime:2024.1.0@sha256:a11cdaad33cf91e04793bbfe0df28408f231da135297de67a1a4c604585217df as prod-openvino
 USER root
-# TODO: remove this once the image has the fix for https://github.com/intel/compute-runtime/issues/710
-ENV NEOReadDebugKeys=1 \
-    OverrideGpuAddressSpace=48
 
 FROM nvidia/cuda:12.2.2-cudnn8-runtime-ubuntu22.04@sha256:2d913b09e6be8387e1a10976933642c73c840c0b735f0bf3c28d97fc9bc422e0 as prod-cuda
 
